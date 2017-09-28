@@ -1,237 +1,186 @@
-var questionArray = [history, math, science];
-var category;
-var current;
-var answer;
-var answerChosen;
-var answerCorrect;
-var answerIncorrect;
-var correctCounter = 0;
-var incorrectCounter = 0;
-var timeUpCounter = 0;
-var questionGenerated;
-var counter;
-var time;
-var timeUp;
-var min;
-var max;
-var randIndex;
-var categoryString;
-var questionCount = 0;
-var gameOver = false;
-var startTime;
+$(document).ready(function () {
 
-var americanHistory = [
-    {   question: "Who is buried in Grant's tomb?",
-		answer1: "Bob",
-		answer2: "Sally",
-		answer3: "Grant",
-		answer4: "Jose", 
-		correctAnswer: "Grant"
+var game = {
+
+	current: '',
+	timer: 0,
+	interval: '',
+	answer: '',
+	correct: 0,
+	inCorrect: 0,
+	timeUp: 0,
+	gameOver: false,
+	questionCount: 0,
+	reset: false,
+	timeRemaining: 0,
+	score: 0,
+	scoreArr: [],
+
+	startState: function () {
+		$('.stats-box').empty();
+		game.timeUp = 0;
+		game.correct = 0;
+		game.inCorrect = 0;
+		game.gameOver = false;
+		game.reset = false;
+		game.questionCount =  0;
+		game.timeRemaining = 0;
+		game.score = 0;
+		game.pickQuestion();
 	},
 
-	{   question: "What year was the war of 1812 fought?",
-		answer1: "1899",
-		answer2: "2155",
-		answer3: "3",
-		answer4: "1812", 
-		correctAnswer: "1812"
+	startGame: function () {
+		$('.timer-box').hide();
 	},
 
-	{	question: "Who is the sexiest man alive?",
-		answer1: "Marco",
-		answer2: "Marco",
-		answer3: "Marco",
-		answer4: "Marco", 
-		correctAnswer: "Marco"
-	}
-];
+	pickQuestion: function () {
+		if (!game.reset) {
 
-var math = [
-
-	{   question: "What is the square root of 49?",
-		answer1: "Bob",
-		answer2: "Sally",
-		answer3: "7",
-		answer4: "Jose", 
-		correctAnswer: "7"
-	},
-
-	{   question: "What is 1819 - the square root of 49?",
-		answer1: "1899",
-		answer2: "2155",
-		answer3: "3",
-		answer4: "1812", 
-		correctAnswer: "1812"
-	},
-
-	{	question: "Who is the sexiest man alive?",
-		answer1: "Still Marco",
-		answer2: "Still Marco",
-		answer3: "Still Marco",
-		answer4: "Still Marco", 
-		correctAnswer: "Still Marco"
-	}
-];
-
-var science = [
-
-	{   question: "How far away is the sun?",
-		answer1: "Bob",
-		answer2: "Sally",
-		answer3: "93 Million Miles",
-		answer4: "Jose", 
-		correctAnswer:"93 Million Miles"
-	},
-
-	{   question: "What is the year after 1811?",
-		answer1: "1899",
-		answer2: "2155",
-		answer3: "3",
-		answer4: "1812", 
-		correctAnswer: "1812"
-	},
-
-	{	question: "Who is the sexiest man alive?",
-		answer1: "Always Marco",
-		answer2: "Always Marco",
-		answer3: "Always Marco",
-		answer4: "Always Marco", 
-		correctAnswer: "Always Marco"
-	}
-];
-
-function random (min, max) {
-	return Math.floor(Math.random()*(max - min + 1) + min);
-}
-
-function startState () {
-	startTime = false;
-	questionGenerated = false; 
-	gameOver = false;
-	correctCounter = 0;
-    incorrectCounter = 0;
-    timeUpCounter = 0;
-    questionCount = 0;
-    $('.category').show();
-    $('.answer-box').hide();
-    $('.timer').hide();
-    $('.stats-box').hide();
-}
-
-function displayQuestion (question, answer1, answer2, answer3, answer4) {
-	$('.answer-box').append(
-		'<div class="question">' + question + '</div><br><button class="answer">' + answer1 + '</button><br><button class="answer">' + answer2 + '</button><br><button class="answer">' + answer3 + '</button><br><button class="answer">' + answer4 + '</button>'
-		);
-	questionGenerated = true;
-}
-
-function generateQuestion() {
-	$('.answer-box').show();
-		$('.timer').show();
-	clearInterval(counter);
-	displayTimer();
-	category = window[categoryString];
-	var min = 0;
-	var max = category.length - 1;
-	randIndex = random(min,max);
-	current = category[randIndex];	
-	if (!questionGenerated) {
-		 $('.answer-box').empty();
-		 $('.answer-box').show();
-		displayQuestion(current.question, current.answer1, current.answer2, current.answer3, current.answer4);
-	}
-}
-
-function displayTimer () {
-	clearInterval(counter);
-	time = 30;
-	if (startTime) {
-		counter = setInterval(function () {
-			time--
-			if (time<=0 ) {
-				$('.answer-box').hide();
-				// clearTimer();
-				timeUp = true;
-				console.log('time up!')	
-				timeUpCounter++
-				questionCount++;
-				console.log('timeUpCounter:', timeUpCounter)
-				clearInterval(counter);
-				
-				gameEnd();
-				
-				nextQuestion();
-			}
-			$('.timer').html('<p>'+time+'</p>');
-		}, 1000);
-	}
-
-}
-
-function clearTimer() {
-	time = 30;
-	clearInterval(counter);
-	$('.timer').html('<p>'+time+'</p>');
-}
-
-function nextQuestion () {
-	if (timeUp || answerCorrect || answerIncorrect ) {
-		questionGenerated = false;
-		timeUp = false;
-		answerCorrect = false;
-		answerIncorrect = false;
-		$('.answer-box').empty();
-		generateQuestion();
-	}
-}
-
-function gameEnd () {
-	if (questionCount>=5) {
-		gameOver = true;
-		startTime = false;
-		clearInterval(counter);
-		var stats = '<p>Number of correct answers: '+ correctCounter +'</p><p>Number of incorrect answers: '+ incorrectCounter +'</p><p>Number of times unanswered: '+ timeUpCounter +'</p>';
-		$('.answer-box, .timer').hide();
-		$('.stats-box').show();
-		$('.stats-box').html(stats);
-
-		var timeout1 = setTimeout(function () {
-			startState();
-		},1000*4);	
-	}
-}
-
-$('body').on('click', '.category-button', function () {
-		categoryString = $(this).val();
-		$('.category').hide();
-		startTime = true;
-		generateQuestion();	
-});
-
-$('body').on('click','.answer', function() {
-	if (!gameOver) {
-		if(!answerChosen) {
-			questionCount++;
-			answer = $(this).text();
-			clearTimer();
-			if (answer === current.correctAnswer ) {
-				console.log('correct questionCount: ',questionCount);
-				console.log('correct');
-				answerCorrect = true;
-				correctCounter++;
-				nextQuestion();
-			} 
-			else {
-				console.log('incorrect questionCount: ',questionCount);
-				console.log('incorrect');
-				answerIncorrect = true;
-				incorrectCounter++;
-				$('button:contains(current.correctAnswer)').addClass('correctClass');
-				setTimeout(function () {
-					nextQuestion();
-				}, 1000);	
-			}	
+			$('.main').show();
+			$('.timer-box').show();
+			game.questionCount++;
+			console.log('question count:', game.questionCount);
+			game.gameOver = false;
+			$('.image-box').empty();
+			$('.answers').show();
+			game.clearTimer();
+			game.setTimer();
+			$('.timer-box').show();
+			var random = Math.floor(Math.random() * 548);
+			game.current = questionArr[random];
+			$('.question').html('<h2 id="question">'+game.current.question+'</h2>');
+			$('.answers').html('<h3 class="answer" id="A">A: '+game.current.A+'<h3/>'+
+								'<h3 class="answer" id="B">B: '+game.current.B+'<h3/>'+
+								'<h3 class="answer" id="C">C: '+game.current.C+'<h3/>'+
+								'<h3 class="answer" id="D">D: '+game.current.D+'<h3/>');
+			$('.quiz-box').fadeIn('fast');
 		}
-		gameEnd();
+	},
+
+	setTimer: function () {
+		game.timer = 31;
+		$('.timer').show();
+		game.interval = setInterval(function () {
+			game.timer--;
+			console.log(game.timer);
+			$('.timer').html(game.timer);
+			if (game.timer<=0) {
+
+				game.getGiph();
+				game.showCorrect("Time's up!  ");
+				$('.answers').empty();
+				game.timeUp++;
+				game.gameOver = true;
+				game.clearTimer();
+				console.log('time\'s up! you have run out this many times: ', game.timeUp);
+				game.gameEnd();
+				setTimeout(function () {
+					game.pickQuestion();
+				}, 1000*6);
+			}
+		}, 1000)
+
+	},
+
+	clearTimer: function () {
+		clearInterval(game.interval);
+	},
+
+	checkCorrect: function () {
+			game.clearTimer();
+			setTimeout(function () {
+				game.pickQuestion();
+			}, 1000*6);
+		if (game.answer===game.current.answer && game.timer>0) {
+			game.correct++;
+			game.timeRemaining+=game.timer;
+			console.log(game.timeRemaining);
+			game.getGiph();
+			$('.answers').empty();
+			game.showCorrect("Correct!  ");
+			game.gameOver = true;
+		}
+		else {
+			game.inCorrect++;
+			game.getGiph();
+			game.showCorrect();
+			game.showCorrect("Incorrect answer!  ");
+			$('.answers').empty();
+			game.gameOver = true;
+		}
+	},
+
+	showCorrect: function (value) {
+		$('.question').html('<h2>'+value+'The correct answer is "'+game.current[game.current.answer]+'"</h2>');
+	},
+
+	getGiph: function () {
+
+	 	queryURL = "https://api.giphy.com/v1/gifs/search?q=" + game.current[game.current.answer] +"&api_key=vM9vIaMqN7X9I2ar4hHiG2SD8bYv5Zgm&limit=20"
+	 	$.ajax({
+	      url: queryURL,
+	      method: 'GET'
+	    }).done(function(response) {
+	    	var random = Math.floor(Math.random()*response.data.length);
+	    	 $('.image-box').html("<img class='img-responsive' src=" + response.data[random].images.downsized.url + ">") 
+	    });
+
+ 	},
+
+ 	gameEnd: function () {
+
+ 		if (game.questionCount>=10) {
+ 			game.reset = true;
+ 			var correctScore = game.correct*10;
+ 			var incorrectScore = game.inCorrect*10;
+ 			var timeUpScore = game.timeUp*5;
+ 			var timeScore = game.timeRemaining*2;
+ 			game.score = correctScore + timeScore - incorrectScore - timeUpScore; 
+ 			$('.stats-box').html('<h2>Your score is: '+game.score+'</h2>'+
+ 								 '<h2>Number of correct answers: '+game.correct+'</h2>'+
+				 				 '<h2>Number of incorrect answers: '+game.inCorrect+'</h2>'+
+				 				 '<h2>Number of times that time ran out: '+game.timeUp+'</h2>'+
+				 				 '<button class="start">Would you like to play again?</button>');
+
+ 		}
+ 		for (var i = 0; i< game.scoreArr.length; i++){
+ 			if (game.score > game.scoreArr[i]) {
+ 				
+ 			}
+ 		}
+ 	},
+
+ 	writeScore: function (score) {
+ 		game.scoreArr.push(score);
+ 		game.scoreArr.sort();
+ 		if (game.scoreArr.length>10) {
+ 			game.scoreArr.pop();
+ 		}
+ 		for (var i = 0; i<game.scoreArr.length; i++) {
+ 			$('.score-box').append(game.scoreArr[i]);
+ 		}
+ 		
+ 	}
+
+
+}//end of game object
+
+//event listeners
+$(document).on('click', '.start', function () {
+	$('.start').hide();
+	game.pickQuestion();
+	if (game.reset) {
+		game.startState();
 	}
 });
+
+$(document).on('click', '.answer', function () {
+	if (!game.gameOver && !game.reset) {
+		game.answer = $(this).attr('id');
+		game.checkCorrect();
+		game.gameEnd();
+	}
+});
+
+
+});//end of document ready function

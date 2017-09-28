@@ -1,7 +1,41 @@
+/*orange color: #FF6138*/
+/*yellow color: #FFFF9D*/
+/*dark green color: #00A388*/
+/*medium green color: #79BD8F*/
+/*light green color: #BEEB9F*/
 body {
-	background: #BADA55;
+	background: #FFFF9D;
+	text-align: center;
+	font-family: monospace;
 }
 
-.correctClass {
-	background-color:red;
+
+.timer-box {
+	display: none;
+}
+
+.title {
+	font-size: 50px;
+	color: #00A388;
+	text-shadow: 1px 1px 5px #FF6138;
+}
+
+button {
+	height: 50px;
+	width: 150px;
+	background: #BEEB9F;
+	border: 2px solid #FF6138;
+}
+
+.main {
+	display: none;
+	background-color: #BEEB9F;
+	width: 75%;
+	border-radius: 20px;
+	padding: 20px;
+	text-align: center;
+	margin: 50px auto;
+	color: #FF6138;
+	font-size: 20px;
+	box-shadow: 2px 2px 10px 0px #00A388;
 }
