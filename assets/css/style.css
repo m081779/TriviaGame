@@ -7,10 +7,19 @@ body {
 	background: #FFFF9D;
 	text-align: center;
 	font-family: monospace;
+	box-sizing: border-box;
 }
 
 
 .timer-box {
+	display: none;
+}
+
+.score-box {
+	/*display: none;*/
+}
+
+.input-box {
 	display: none;
 }
 
@@ -27,15 +36,40 @@ button {
 	border: 2px solid #FF6138;
 }
 
-.main {
+.main, .score-box {
 	display: none;
 	background-color: #BEEB9F;
-	width: 75%;
 	border-radius: 20px;
 	padding: 20px;
 	text-align: center;
-	margin: 50px auto;
+	/*margin: 50px auto;*/
 	color: #FF6138;
 	font-size: 20px;
 	box-shadow: 2px 2px 10px 0px #00A388;
+
+
 }
+
+.question {
+	margin-bottom: 50px;
+}
+/*
+.name {
+	white-space: pre;
+}*/
+
+.answer {
+	display: inline;
+	padding: 5px 20px;
+	font-size: 30px;
+}
+.answer:hover {
+	border: 2px solid #FF6138;
+	background-color:#79BD8F;
+	cursor: pointer;
+	font-style: italic;
+	font-weight: bold;
+	color: white;
+}
+
+.score

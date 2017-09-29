@@ -3,27 +3,38 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Trivia game!</title>
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 	<div class="container">
 		
 		<h1 class="title">Trivia Game!</h1>
-		<button class="start">START</button>
-		<div class="main">
-			<div class="timer-box">
-				<h2>Time remaining: <span class="timer"></span></h2>
-			</div>
-			<div class="quiz-box">
-				<div class="question"></div>
-				<div class="answers"></div>
-			</div>
+		<button class="start btn btn-warning">START</button>
+		<div class="row">
+			<div class="main col-md-7 col-md-offset-1 text-center">
+				<div class="timer-box">
+					<h2>Time remaining: <span class="timer"></span></h2>
+				</div>
+				<div class="quiz-box">
+					<div class="question"></div>
+					<div class="answers"></div>
+				</div>
 
-			<div class="image-box"></div>
-			<div class="stats-box"></div>
+				<div class="image-box"></div>
+				<div class="stats-box"></div>
+			</div>
+			<div class="score-box col-md-2 col-md-offset-2 text-center">
+				<h1>High scores: </h1>
+				<div class="scores">
+					<div><span class="item1 score"></span><span class="name1 score"></span></div>
+					<div><span class="item2 score"></span><span class="name2 score"></span></div>
+					<div><span class="item3 score"></span><span class="name3 score"></span></div>
+					<div><span class="item4 score"></span><span class="name4 score"></span></div>
+					<div><span class="item5 score"></span><span class="name5 score"></span></div>
+				</div>
+			</div>
 		</div>
-		<div class="scores"></div>
 
 	</div>
 	<!-- <script
