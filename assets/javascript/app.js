@@ -6,6 +6,7 @@ $(document).ready(function () {
 	/////////////////////////////////game object/////////////////////////////////////
 
 	var game = {
+
 		//game variables
 		current: '',
 		interval: '',
@@ -22,6 +23,7 @@ $(document).ready(function () {
 		scoreArr: [500,400,300,200,100],
 		nameArr: ['AAA','BBB','CCC','DDD','EEE'],
 
+		//sound effect methods
 		applauseSound: function () {
 			var snd1  = new Audio();
 			var src1  = document.createElement("source");
@@ -51,14 +53,13 @@ $(document).ready(function () {
 
 		//method that resets game to start state
 		startState: function () {
-			//stops hover events on title elements
+			//stops hover events on title elements after game starts
 			$('.titles').css({
 				'pointer-events': 'none'
 			});
+			// $('.stats-box').hide();
 			//writes scores to screen
 			game.writeScore();
-			//removes stats
-			// $('.stats-box').empty();
 			//resets variables
 			game.timeUp = 0;
 			game.correct = 0;
@@ -77,6 +78,7 @@ $(document).ready(function () {
 		pickQuestion: function () {
 			//conditional checks flag to make sure game hasn't been reset
 			if (!game.reset) {
+				// $('.stats-box').hide();
 				//setting display of different elements 
 				$('.main').show();
 				$('.timer-box').show();
@@ -90,7 +92,6 @@ $(document).ready(function () {
 				//resets timer
 				game.clearTimer(game.interval);
 				game.setTimer();
-
 				//generates random question from questionArr
 				var random = Math.floor(Math.random() * questionArr.length);
 				game.current = questionArr[random];
@@ -98,9 +99,9 @@ $(document).ready(function () {
 				//writes question to the screen
 				$('.question').html('<h1 id="question">'+game.current.question+'</h1>');
 				$('.answers').html('<h3 class="answer" id="A">A: '+game.current.A+'<h3/>'+
-									'<h3 class="answer" id="B">B: '+game.current.B+'<h3/>'+
-									'<h3 class="answer" id="C">C: '+game.current.C+'<h3/>'+
-									'<h3 class="answer" id="D">D: '+game.current.D+'<h3/>');
+								   '<h3 class="answer" id="B">B: '+game.current.B+'<h3/>'+
+								   '<h3 class="answer" id="C">C: '+game.current.C+'<h3/>'+
+								   '<h3 class="answer" id="D">D: '+game.current.D+'<h3/>');
 			}
 		},//end of pickQuestion method
 
@@ -150,12 +151,12 @@ $(document).ready(function () {
 
 		//method that checks win and loss conditions
 		checkCorrect: function () {
-				//clears timer
-				game.clearTimer(game.interval);
-				//sets 5s timeout for new question to be picked to give time for image to display
-				setTimeout(function () {
-					game.pickQuestion();
-				}, 1000*5);
+			//clears timer
+			game.clearTimer(game.interval);
+			//sets 5s timeout for new question to be picked to give time for image to display
+			setTimeout(function () {
+				game.pickQuestion();
+			}, 1000*5);
 			//conditional checks clicked answer against correct answer only when timer > 0
 			if (game.answer===game.current.answer && game.timer>0) {
 				//plays bell sound
@@ -238,6 +239,7 @@ $(document).ready(function () {
 	 				$('.image-box').empty();
 	 				$('.timer-box').hide();
 		 			$('.question').hide();
+ 					$('.stats-box').show();
 		 			$('.stats-box').html('<h2>Your score is: '+game.score+'</h2>'+
 						'<h2>Number of correct answers: '+game.correct+'</h2>'+
 						'<h2>Number of incorrect answers: '+game.inCorrect+'</h2>'+
@@ -298,8 +300,9 @@ $(document).ready(function () {
 
 	//start button event listener
 	$(document).on('click', '.start', function () {
-		//hides start button and shows score box when clicked
+		//hides start button, stats box, and shows score box when clicked
 		$('.start').hide();
+		$('.stats-box').hide();
 		$('.score-box').show();
 		//runs startState method
 		game.startState();
