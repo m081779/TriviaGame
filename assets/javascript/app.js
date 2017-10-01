@@ -51,6 +51,32 @@ $(document).ready(function () {
 			snd3.play();
 		},
 
+		//method that stores names and scores to local storage
+		storeArr: function () {
+			//name and score arrays are stringified and stored in local storage
+			localStorage.setItem('scoreArr', JSON.stringify(game.scoreArr));
+			localStorage.setItem('nameArr', JSON.stringify(game.nameArr));
+		},
+
+		//method that retrieves nameArr from local storage and parses it
+		getNameArr: function () {
+			return JSON.parse(localStorage.getItem('nameArr'));
+		},
+
+		//method that retrieves scoreArr from local storage and parses it
+		getScoreArr: function () {		
+			return JSON.parse(localStorage.getItem('scoreArr'));
+		},
+
+		//method that resets scores
+		resetScores: function () {
+			//sets user score to zero to avoid it coming back as undefined
+			game.score = 0;
+			//sets score and name array to default and stores default data in local storage
+			game.scoreArr = localStorage.setItem('scoreArr', JSON.stringify([500,400,300,200,100]));
+			game.nameArr = localStorage.setItem('nameArr', JSON.stringify(['AAA','BBB','CCC','DDD','EEE']));
+		},
+
 		//method that resets game to start state
 		startState: function () {
 			//stops hover events on title elements after game starts
@@ -95,7 +121,7 @@ $(document).ready(function () {
 				//generates random question from questionArr
 				var random = Math.floor(Math.random() * questionArr.length);
 				game.current = questionArr[random];
-				console.log('for debugging: ',game.current);
+				console.log('Question for debugging: ',game.current);
 				//writes question to the screen
 				$('.question').html('<h1 id="question">'+game.current.question+'</h1>');
 				$('.answers').html('<h3 class="answer" id="A">A: '+game.current.A+'<h3/>'+
@@ -115,7 +141,6 @@ $(document).ready(function () {
 			game.interval = setInterval(function () {
 				//decrements timer every second and writes it to the screen
 				game.timer--;
-				console.log(game.timer);
 				$('.timer').html(game.timer);
 				//conditional to check when timer runs out
 				if (game.timer<=0) {
@@ -133,7 +158,6 @@ $(document).ready(function () {
 					game.gameOver = true;
 					//clears timer
 					game.clearTimer(game.interval);
-					console.log('time\'s up! you have run out this many times: ', game.timeUp);
 					//runs gameEnd method
 					game.gameEnd();
 					//sets 5s timeout for new question to be picked to give time for image to display
@@ -193,7 +217,7 @@ $(document).ready(function () {
 
 		//method that writes correct answer to screen, and message that tells whether won or lost
 		showCorrect: function (value) {
-			$('.question').html('<h2>'+value+'The correct answer is "'+game.current[game.current.answer]+'"</h2>');
+			$('.question').html('<h2>' + value + 'The answer is "' + game.current[game.current.answer] + '"</h2>');
 		},
 
 		//method that fetches gifs from Giphy API
@@ -213,7 +237,7 @@ $(document).ready(function () {
 			  'tag': tag,
 			  'rating': 'pg13'
 			});
-			console.log('query: ', queryURL);
+			console.log('Query for debugging: ', queryURL);
 			//ajax 'GET' call
 		 	$.ajax({
 		      url: queryURL,
@@ -264,6 +288,8 @@ $(document).ready(function () {
 
 	 	//method that writes scores and name to scoreboard
 	 	writeScore: function () {
+	 		game.scoreArr = game.getScoreArr();
+	 		game.nameArr = game.getNameArr();
 	 		//loops through scoreArr
 			for (var i = 0; i < game.scoreArr.length; i++){
 				//conditional checks if user score is higher than index score 
@@ -278,12 +304,20 @@ $(document).ready(function () {
 	 				//lowest score is bumped off of scoreboard
 	 				game.scoreArr.pop(); 
 	 				game.nameArr.pop();
+	 				//writes scores and names to local storage
+	 				game.storeArr();
 	 				//breaks out of loop so that all scores lower aren't overwritten 		 		
 	 				break;		
 	 			}
 	 		}//end of first for loop
+
+	 		//retrieves stored names and scores and stores them as variables
+	 		// game.scoreArr = game.getScoreArr();
+	 		// game.nameArr = game.getNameArr();
+
 	 		//loop that fires to writes names and scores to screen
 	 		for (var i = 0; i < game.scoreArr.length; i++){
+	 			
 	 			//variable that changes zero based index to 1 based index for class names
 	 			var index = i + 1;
 	 			//writes each index of scoreArr and nameArr to screen 
@@ -317,6 +351,16 @@ $(document).ready(function () {
 			game.checkCorrect();
 			//and tests end game conditions
 			game.gameEnd();
+		}
+	});
+	//clear button click event
+	$('#clear').on('click', function () {
+		//stores boolean for whether to reset scores
+		var reset = confirm('Scores will be permanently deleted.\n Do you wish to continue?');
+		//if reset it confirmed, scores are reset to default and written to screen
+		if (reset) {
+			game.resetScores();
+			game.writeScore();
 		}
 	});
 });//end of document ready function
