@@ -288,6 +288,7 @@ $(document).ready(function () {
 
 	 	//method that writes scores and name to scoreboard
 	 	writeScore: function () {
+	 		//retrieves stored names and scores and stores them as variables
 	 		game.scoreArr = game.getScoreArr();
 	 		game.nameArr = game.getNameArr();
 	 		//loops through scoreArr
@@ -311,13 +312,8 @@ $(document).ready(function () {
 	 			}
 	 		}//end of first for loop
 
-	 		//retrieves stored names and scores and stores them as variables
-	 		// game.scoreArr = game.getScoreArr();
-	 		// game.nameArr = game.getNameArr();
-
 	 		//loop that fires to writes names and scores to screen
-	 		for (var i = 0; i < game.scoreArr.length; i++){
-	 			
+	 		for (var i = 0; i < game.scoreArr.length; i++){			
 	 			//variable that changes zero based index to 1 based index for class names
 	 			var index = i + 1;
 	 			//writes each index of scoreArr and nameArr to screen 
