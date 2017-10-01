@@ -16,6 +16,7 @@ body {
 }
 
 .titles {
+	margin: 0;
 	display: inline-block;
 	position: relative;
 	padding: 20px 40px;	
@@ -28,24 +29,30 @@ body {
 }
 
 .title1 {	
-	transform: rotate(-10deg) translate(-35%, -5%);	
+	position: absolute;
+	left: 13%;
+	transform: rotate(-10deg);	
 	transition: all 300ms ease;
 
 }
 
 .title1:hover {
-	transform: rotate(0deg) translate(-35%, -5%) scale(1.1);
+	left: 13%;
+	transform: rotate(0deg) scale(1.1);
 	box-shadow: 2px 40px 17px -25px #777;
 	border: 1px solid rgba(0,0,0,.1);
 }
 
 .title2 {
-	transform: rotate(8deg) translate(0%, -6%);
+	position: absolute;
+	left: 37%;
+	transform: rotate(8deg);
 	transition: all 300ms ease;
 }
 
 .title2:hover {
-	transform: rotate(0deg) translate(0%, -6%) scale(1.1);
+	left: 37%;
+	transform: rotate(0deg) scale(1.1);
 	box-shadow: 2px 40px 17px -25px #777;
 	border: 1px solid rgba(0,0,0,.1);
 }
@@ -64,12 +71,14 @@ body {
 	transition: all 300ms ease;
 	transform: translateY(100px) rotate(-14deg);
 	border: none;
+	z-index: 1;
 }
 
 #begin.start.btn.btn-danger:hover {
 	transform: translateY(100px) rotate(0deg) scale(1.2);
 	box-shadow: 2px 40px 17px -25px #777;
 	border: 1px solid rgba(0,0,0,.1);
+	z-index: 100;
 }
 
 #begin.start.btn.btn-danger:active {
@@ -102,6 +111,7 @@ body {
 }
 
 .main, .score-box {
+	margin-top: 15%;
 	display: none;
 	font-family: 'Pangolin', cursive;
 	background-color: rgba(245,245,245,1);
