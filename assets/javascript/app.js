@@ -52,30 +52,30 @@ $(document).ready(function () {
 		},
 
 		//method that stores names and scores to local storage
-		// storeArr: function () {
-		// 	//name and score arrays are stringified and stored in local storage
-		// 	localStorage.setItem('scoreArr', JSON.stringify(game.scoreArr));
-		// 	localStorage.setItem('nameArr', JSON.stringify(game.nameArr));
-		// },
+		storeArr: function () {
+			//name and score arrays are stringified and stored in local storage
+			localStorage.setItem('scoreArr', JSON.stringify(game.scoreArr));
+			localStorage.setItem('nameArr', JSON.stringify(game.nameArr));
+		},
 
 		//method that retrieves nameArr from local storage and parses it
-		// getNameArr: function () {
-		// 	return JSON.parse(localStorage.getItem('nameArr'));
-		// },
+		getNameArr: function () {
+			return JSON.parse(localStorage.getItem('nameArr'));
+		},
 
 		//method that retrieves scoreArr from local storage and parses it
-		// getScoreArr: function () {		
-		// 	return JSON.parse(localStorage.getItem('scoreArr'));
-		// },
+		getScoreArr: function () {		
+			return JSON.parse(localStorage.getItem('scoreArr'));
+		},
 
 		//method that resets scores
-		// resetScores: function () {
-		// 	//sets user score to zero to avoid it coming back as undefined
-		// 	game.score = 0;
-		// 	//sets score and name array to default and stores default data in local storage
-		// 	game.scoreArr = localStorage.setItem('scoreArr', JSON.stringify([500,400,300,200,100]));
-		// 	game.nameArr = localStorage.setItem('nameArr', JSON.stringify(['AAA','BBB','CCC','DDD','EEE']));
-		// },
+		resetScores: function () {
+			//sets user score to zero to avoid it coming back as undefined
+			game.score = 0;
+			//sets score and name array to default and stores default data in local storage
+			game.scoreArr = localStorage.setItem('scoreArr', JSON.stringify([500,400,300,200,100]));
+			game.nameArr = localStorage.setItem('nameArr', JSON.stringify(['AAA','BBB','CCC','DDD','EEE']));
+		},
 
 		//method that resets game to start state
 		startState: function () {
@@ -288,9 +288,14 @@ $(document).ready(function () {
 
 	 	//method that writes scores and name to scoreboard
 	 	writeScore: function () {
+	 		//conditional checks if local storage exists for nameArr
+	 		//and scoreArr, and writes them to local storage if not
+	 		if (localStorage.getItem('nameArr')===null || localStorage.getItem('scoreArr')===null) {
+	 			game.storeArr();
+	 		}
 	 		//retrieves stored names and scores and stores them as variables
-	 		// game.scoreArr = game.getScoreArr();
-	 		// game.nameArr = game.getNameArr();
+	 		game.scoreArr = game.getScoreArr();
+	 		game.nameArr = game.getNameArr();
 	 		//loops through scoreArr
 			for (var i = 0; i < game.scoreArr.length; i++){
 				//conditional checks if user score is higher than index score 
@@ -306,14 +311,19 @@ $(document).ready(function () {
 	 				game.scoreArr.pop(); 
 	 				game.nameArr.pop();
 	 				//writes scores and names to local storage
-	 				// game.storeArr();
+	 				game.storeArr();
 	 				//breaks out of loop so that all scores lower aren't overwritten 		 		
 	 				break;		
 	 			}
 	 		}//end of first for loop
 
+	 		//retrieves stored names and scores and stores them as variables
+	 		// game.scoreArr = game.getScoreArr();
+	 		// game.nameArr = game.getNameArr();
+
 	 		//loop that fires to writes names and scores to screen
-	 		for (var i = 0; i < game.scoreArr.length; i++){			
+	 		for (var i = 0; i < game.scoreArr.length; i++){
+	 			
 	 			//variable that changes zero based index to 1 based index for class names
 	 			var index = i + 1;
 	 			//writes each index of scoreArr and nameArr to screen 
@@ -350,13 +360,13 @@ $(document).ready(function () {
 		}
 	});
 	//clear button click event
-	// $('#clear').on('click', function () {
-	// 	//stores boolean for whether to reset scores
-	// 	var reset = confirm('Scores will be permanently deleted.\n Do you wish to continue?');
-	// 	//if reset it confirmed, scores are reset to default and written to screen
-	// 	if (reset) {
-	// 		game.resetScores();
-	// 		game.writeScore();
-	// 	}
-	// });
+	$('#clear').on('click', function () {
+		//stores boolean for whether to reset scores
+		var reset = confirm('Scores will be permanently deleted.\n Do you wish to continue?');
+		//if reset it confirmed, scores are reset to default and written to screen
+		if (reset) {
+			game.resetScores();
+			game.writeScore();
+		}
+	});
 });//end of document ready function
