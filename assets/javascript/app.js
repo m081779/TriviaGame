@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-//starts background music on load
+	//starts background music on load
 	background.play();
 
 	/////////////////////////////////game object/////////////////////////////////////
@@ -18,7 +18,7 @@ $(document).ready(function () {
 		timeUp: 0,
 		timeRemaining: 0,
 		score: 0,
-		gameOver: false,
+		QuestAnswered: false,
 		reset: false,	
 		scoreArr: [500,400,300,200,100],
 		nameArr: ['AAA','BBB','CCC','DDD','EEE'],
@@ -90,7 +90,7 @@ $(document).ready(function () {
 			game.timeUp = 0;
 			game.correct = 0;
 			game.inCorrect = 0;
-			game.gameOver = false;
+			game.QuestAnswered = false;
 			game.reset = false;
 			game.questionCount =  0;
 			game.timeRemaining = 0;
@@ -104,7 +104,6 @@ $(document).ready(function () {
 		pickQuestion: function () {
 			//conditional checks flag to make sure game hasn't been reset
 			if (!game.reset) {
-				// $('.stats-box').hide();
 				//setting display of different elements 
 				$('.main').show();
 				$('.timer-box').show();
@@ -113,8 +112,8 @@ $(document).ready(function () {
 				$('.answers').show();
 				//incrementing variable that tracks number of questions
 				game.questionCount++;
-				//flag variable that checks if question answered
-				game.gameOver = false;
+				//flag variable that checks if question QuestAnswered
+				game.QuestAnswered = false;
 				//resets timer
 				game.clearTimer(game.interval);
 				game.setTimer();
@@ -154,8 +153,8 @@ $(document).ready(function () {
 					$('.answers').empty();
 					//increments timeUp variable to track condition
 					game.timeUp++;
-					//sets gameOver flag
-					game.gameOver = true;
+					//sets QuestAnswered flag
+					game.QuestAnswered = true;
 					//clears timer
 					game.clearTimer(game.interval);
 					//runs gameEnd method
@@ -193,10 +192,10 @@ $(document).ready(function () {
 				game.getGiph();
 				//removes answers so they can't be double clicked
 				$('.answers').empty();
-				//writes correct message to the screen
+				//writes correct answer message to the screen
 				game.showCorrect("Correct!  ");
-				//sets gameOver flag to true
-				game.gameOver = true;
+				//sets QuestAnswered flag to true
+				game.QuestAnswered = true;
 			}
 			//if answer isn't correct, this block runs
 			else {
@@ -210,8 +209,8 @@ $(document).ready(function () {
 				game.showCorrect("Incorrect answer!  ");
 				//removes answers so they can't be double clicked
 				$('.answers').empty();
-				//sets gameOver flag to true
-				game.gameOver = true;
+				//sets QuestAnswered flag to true
+				game.QuestAnswered = true;
 			}
 		},//end of checkCorrect method
 
@@ -317,10 +316,6 @@ $(document).ready(function () {
 	 			}
 	 		}//end of first for loop
 
-	 		//retrieves stored names and scores and stores them as variables
-	 		// game.scoreArr = game.getScoreArr();
-	 		// game.nameArr = game.getNameArr();
-
 	 		//loop that fires to writes names and scores to screen
 	 		for (var i = 0; i < game.scoreArr.length; i++){
 	 			
@@ -330,13 +325,14 @@ $(document).ready(function () {
 	 			$('.item' + index).text(game.scoreArr[i] + " ");
 				$('.name' + index).text(" " + game.nameArr[i]);
 	 		}//end of second for loop
+
 	 		//resets user's score to 0 after write
 	 		game.score = 0;
 	 	}//end of writeScore method
 
 	}//end of game object
 
-	/////////////////////event listeners///////////////////////
+//////////////////////////////////////////event listeners////////////////////////////////////////////
 
 	//start button event listener
 	$(document).on('click', '.start', function () {
@@ -349,8 +345,8 @@ $(document).ready(function () {
 	});
 	//answer click events
 	$(document).on('click', '.answer', function () {
-		//conditional checks gameOver and reset flags so additional clicks aren't registered
-		if (!game.gameOver && !game.reset) {
+		//conditional checks QuestAnswered and reset flags so additional clicks aren't registered
+		if (!game.QuestAnswered && !game.reset) {
 			//variable stores id of clicked answer for use in other methods
 			game.answer = $(this).attr('id');
 			//checks if answer is correct
@@ -362,9 +358,9 @@ $(document).ready(function () {
 	//clear button click event
 	$('#clear').on('click', function () {
 		//stores boolean for whether to reset scores
-		var reset = confirm('Scores will be permanently deleted.\n Do you wish to continue?');
+		var resetScore = confirm('Scores will be permanently deleted.\n Do you wish to continue?');
 		//if reset it confirmed, scores are reset to default and written to screen
-		if (reset) {
+		if (resetScore) {
 			game.resetScores();
 			game.writeScore();
 		}
