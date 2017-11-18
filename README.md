@@ -1,6 +1,6 @@
 # Trivia Game
 
-[Click here](https://soapbox.wistia.com/videos/uzudY0rwk0) for a link to the deployed version.
+[Click here](https://m081779.github.io/TriviaGame/) for a link to the deployed version.
 
 ## Technologies used:
  * HTML5
