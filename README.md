@@ -1,5 +1,7 @@
 # Trivia Game
 
+[Click here](https://soapbox.wistia.com/videos/uzudY0rwk0) for a link to the deployed version.
+
 ## Technologies used:
  * HTML5
  * CSS3 (including CSS animations and transitions)
